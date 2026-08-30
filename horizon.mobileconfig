@@ -7,9 +7,6 @@
 		<dict>
 			<key>FullScreen</key>
 			<true/>
-			<key>Icon</key>
-			<data>
-			</data>
 			<key>IsRemovable</key>
 			<true/>
 			<key>Label</key>
@@ -29,7 +26,7 @@
 			<key>Precomposed</key>
 			<true/>
 			<key>URL</key>
-			<string>https://barbouryachting.github.io/Test-4.4.0/</string>
+			<string>https://barbouryachting.github.io/Test-4.4.0</string>
 		</dict>
 	</array>
 	<key>PayloadDisplayName</key>
