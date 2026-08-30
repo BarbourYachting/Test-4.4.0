@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" /> 
+<title>Kuveyt Türk — واجهة مُحسّنة (VIP)</title>
+
+<link rel="icon" type="image/png" href="images/kuveyt-bank-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kuveyt-deep: #007A3E; 
+    --kuveyt-mid: #00994B; 
+    --kuveyt-light: #F0FAF3; 
+    --kuveyt-text: #1C1C1C;
+    --kuveyt-gray: #f9f9f9; 
+    --vip-gold: #D4AF37;
+    --vip-gold-light: #F9F6EE;
+    --shadow-color: rgba(0, 122, 62, 0.15);
+  }
+  html,body{
+    height:100%;
+    margin:0;
+    font-family:"Tajawal", Arial, sans-serif;
+    direction:rtl;
+    background:var(--kuveyt-gray);
+    color:var(--kuveyt-text);
+    -webkit-font-smoothing:antialiased;
+    box-sizing: border-box;
+    touch-action: manipulation;
+  }
+  *,*::before,*::after { box-sizing: inherit; }
+  button{ cursor: pointer; transition: background-color 0.2s, transform 0.1s; border: none; }
+  button:active{ transform: scale(0.98); }
+
+  #app-container {
+    max-width: 420px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  input, select, textarea { font-size: 16px !important; }
+
+  .app-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 18px;
+    background:#fff; 
+    color:var(--kuveyt-deep);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .header-icon{ background:none; border:none; color:#555; font-size:22px; cursor:pointer; padding: 4px; line-height: 1; }
+  .icon-svg{ width: 24px; height: 24px; vertical-align: middle; fill: currentColor; }
+  
+  .profile-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #444;
+  }
+  .profile-pic-wrapper {
+    position: relative;
+  }
+  .profile-pic {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--kuveyt-mid);
+    border: 2px solid var(--vip-gold);
+  }
+  
+  /* --- VIP BADGE --- */
+  .vip-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    color: #fff;
+    font-size: 8px;
+    font-weight: 900;
+    padding: 1px 4px;
+    border-radius: 4px;
+    border: 1px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 0.5px;
+  }
+
+  .profile-texts {
+    display: flex;
+    flex-direction: column;
+  }
+  .profile-name-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .vip-title-tag {
+    font-size: 10px;
+    color: var(--vip-gold);
+    background: var(--vip-gold-light);
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 800;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+
+  .info-bar {
+      background: var(--kuveyt-light);
+      color: var(--kuveyt-deep);
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+  }
+  .info-bar .icon-svg { width: 16px; height: 16px; fill: var(--kuveyt-deep); }
+
+  .panel-view{ display: none; min-height: calc(100vh - 70px); background: #fff; }
+  .panel-active{ display: block !important; }
+  
+  .primary-account-box{ background: #fff; padding: 10px 18px 10px; }
+  .tab-bar { display: flex; gap: 20px; margin-bottom: 20px; }
+  .tab-item { font-size: 16px; font-weight: 700; color: #999; padding-bottom: 4px; border-bottom: 2px solid transparent; cursor: pointer; }
+  .tab-item.active { color: var(--kuveyt-deep); border-color: var(--kuveyt-deep); }
+  
+  .account-summary {
+      background: var(--kuveyt-gray);
+      padding: 18px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      border: 1px solid #eee;
+  }
+  
+  /* --- CURRENCY SWITCHER STYLES --- */
+  .account-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  .account-header .icon-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+  }
+  .currency-switcher-select {
+      background: #fff;
+      border: 1px solid var(--kuveyt-mid);
+      color: var(--kuveyt-deep);
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+  }
+
+  .account-balance {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--kuveyt-deep);
+      text-align: right;
+      direction: ltr;
+  }
+  .secondary-balance-text {
+      font-size: 14px;
+      color: #888;
+      text-align: right;
+      margin-top: -10px;
+      margin-bottom: 10px;
+  }
+  .view-all-link { color: var(--kuveyt-deep); font-weight: 700; font-size: 14px; text-align: center; margin-top: 10px; display: block; text-decoration: none; }
+
+  .fast-transactions-section { padding: 10px 18px; }
+  .fast-transactions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 700; }
+  .fast-transactions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+  .fast-transaction-item {
+    background: var(--kuveyt-gray);
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: #444;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+  .fast-transaction-item:hover { border-color: var(--kuveyt-mid); background: #fafafa; }
+  .item-icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; }
+
+  .exclusive-section { padding: 15px 18px; border-top: 8px solid var(--kuveyt-gray); }
+  .exclusive-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 16px; font-weight: 700; }
+  .exclusive-card { background: #fdfdfd; border: 1px solid #eee; border-radius: 12px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+  .promo-actions { display: flex; gap: 10px; margin-top: 15px; justify-content: flex-end; }
+  .btn-join { background: var(--kuveyt-mid); color: #fff; padding: 8px 15px; border-radius: 8px; font-weight: 700; }
+  .btn-skip { background: #fff; color: #999; border: 1px solid #ddd; padding: 8px 15px; border-radius: 8px; font-weight: 700; }
+
+  .card-section-wrapper{ padding: 15px 18px 25px; background: #fff; }
+  .card-box-header { font-size: 16px; font-weight: 700; color: var(--kuveyt-deep); margin-bottom: 15px; }
+  .card-section-wrapper .card-container { background: var(--kuveyt-gray); border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); border: 1px solid #eee; }
+  .card-section-wrapper .card-details-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+  .card-section-wrapper .card-info-label { font-size: 0.9em; color: #777; }
+  .card-section-wrapper .card-balance-tl { font-size: 1.2em; font-weight: 800; color: var(--kuveyt-deep); direction: ltr; text-align: left; }
+  .card-section-wrapper .card-balance-usd { font-size: 1em; font-weight: 700; color: #4CAF50; direction: ltr; text-align: left; }
+
+  .transactions-section{ background: #fff; padding: 15px 18px 70px; border-top: 8px solid var(--kuveyt-gray); }
+  .transactions-section h3{ font-size: 16px; font-weight: 700; color: var(--kuveyt-text); margin-bottom: 15px; }
+  .transaction-item{ display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+  .transaction-item:last-of-type { border-bottom: none; }
+  .tx-details-group { text-align: right; }
+  .tx-title { font-weight: 700; color: #444; }
+  .tx-amount{ font-weight: 700; color: var(--kuveyt-deep); font-size: 16px; }
+  .tx-details{ font-size: 13px; color: #666; margin-top: 2px; }
+  
+  .private-banking-section { padding: 15px 18px; border-top: 8px solid var(--kuveyt-gray); }
+  .private-banking-section h3 { font-size: 14px; font-weight: 700; color: #444; margin-bottom: 10px; }
+  .contact-buttons { display: flex; gap: 15px; justify-content: center; padding: 10px 0; }
+  .contact-btn {
+      width: 50px; height: 50px; border-radius: 50%;
+      background: var(--kuveyt-light);
+      border: 1px solid var(--kuveyt-mid);
+      color: var(--kuveyt-mid);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+  }
+  .contact-btn:hover { background: var(--kuveyt-mid); color: #fff; }
+  
+  .app-navbar{
+    position: fixed; bottom: 0; width: 100%; max-width: 420px;
+    background: #fff; border-top: 1px solid #eee; display: flex;
+    justify-content: space-around; padding: 8px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 100;
+  }
+  .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #999; font-size: 10px; font-weight: 700; cursor: pointer; padding: 4px 0; flex-grow: 1; }
+  .nav-item-active { color: var(--kuveyt-deep); }
+  .nav-icon-wrapper { margin-bottom: 2px; }
+  .nav-item .icon-svg { width: 20px; height: 20px; }
+  
+  #splash-screen {
+      position: fixed; inset: 0; display: none; flex-direction: column;
+      align-items: center; justify-content: center; background: #fff; z-index: 1000; 
+      transition: opacity 0.5s ease-out; opacity: 1;
+  }
+  .splash-logo {
+      text-align: center; margin-bottom: 20px; width: 140px; height: 140px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 160 160\'><rect width=\'160\' height=\'160\' fill=\'none\'/><g transform=\'translate(10, 10)\'><circle cx=\'70\' cy=\'70\' r=\'68\' fill=\'none\' stroke=\'%2347c699\' stroke-width=\'4\'/><circle cx=\'70\' cy=\'70\' r=\'68\' fill=\'rgba(71, 198, 153, 0.2)\'/><path fill=\'%2300994B\' d=\'M88.7,35.4c-1.8-0.9-3.7-1.4-5.6-1.4c-2.8,0-5.4,1.1-7.4,3.1c-1.9,1.9-2.9,4.4-2.9,7v39.5c0,1.3,0.3,2.5,0.9,3.6c0.6,1.1,1.5,2,2.6,2.6c1.1,0.6,2.4,0.9,3.7,0.9c1.3,0,2.5-0.3,3.6-0.9c1.1-0.6,2-1.5,2.6-2.6c0.6-1.1,0.9-2.3,0.9-3.6V44.1c0-0.7,0.1-1.3,0.3-1.8c0.2-0.5,0.5-0.9,0.9-1.3l17.4-17.4C90.2,23.3,89.5,23.3,88.7,35.4z\'/><path fill=\'%2300994B\' d=\'M111.4,49.1L94,66.5c-0.8,0.8-1.7,1.1-2.6,1.1c-1.8,0-3.5-0.7-4.8-2.1c-1.3-1.4-2-3.1-2-5.1c0-2.8,1.1-5.4,3.1-7.4c1.9-1.9,4.4-2.9,7-2.9c1.9,0,3.8,0.4,5.4,1.2l22.4,11.2C118.8,61.9,112.9,55.1,111.4,49.1z\'/><path fill=\'%2300994B\' d=\'M50,89.7L32.6,72.3c-0.8-0.8-1.7-1.1-2.6-1.1c-1.8,0-3.5,0.7-4.8,2.1c-1.3,1.4-2-3.1-2-5.1c0,2.8,1.1,5.4,3.1,7.4c1.9,1.9,4.4,2.9,7,2.9c1.9,0,3.8-0.4,5.4-1.2l22.4-11.2C57.4,76.9,51.5,83.7,50,89.7z\'/><path fill=\'%2300994B\' d=\'M70,140V82.7c0-2.8,1.1-5.4,3.1-7.4c1.9-1.9,4.4-2.9,7-2.9c1.9,0,3.8,0.4,5.4,1.2l-22.4,11.2C52.1,83.7,58,90.5,70,140z\'/><path fill=\'%2300994B\' d=\'M85.7,140V82.7c0-2.8,1.1-5.4,3.1-7.4c1.9-1.9,4.4-2.9,7-2.9c1.9,0,3.8,0.4,5.4,1.2l-22.4,11.2C82.1,83.7,88,90.5,85.7,140z\'/><rect x=\'75\' y=\'70\' width=\'10\' height=\'70\' fill=\'none\' stroke=\'%23007A3E\' stroke-width=\'1.5\' stroke-dasharray=\'8, 4\'/></g></svg>');
+      background-repeat: no-repeat; background-position: center; background-size: contain;
+  }
+  .splash-text { color: var(--kuveyt-mid); font-size: 20px; font-weight: 800; margin-top: 10px; }
+  #splash-screen.fade-out { opacity: 0; }
+
+  #welcome-screen {
+      position: fixed; inset: 0; display: none; flex-direction: column;
+      align-items: center; background: #fff; z-index: 950; padding: 50px 25px; justify-content: flex-start;
+  }
+  .welcome-content { width: 100%; text-align: right; }
+  .welcome-logo {
+      width: 50px; height: 50px; margin-bottom: 20px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 160 160\'><rect width=\'160\' height=\'160\' fill=\'none\'/><g transform=\'translate(10, 10)\'><circle cx=\'70\' cy=\'70\' r=\'68\' fill=\'none\' stroke=\'%2347c699\' stroke-width=\'4\'/><circle cx=\'70\' cy=\'70\' r=\'68\' fill=\'rgba(71, 198, 153, 0.2)\'/><path fill=\'%2300994B\' d=\'M88.7,35.4c-1.8-0.9-3.7-1.4-5.6-1.4c-2.8,0-5.4,1.1-7.4,3.1c-1.9,1.9-2.9,4.4-2.9,7v39.5c0,1.3,0.3,2.5,0.9,3.6c0.6,1.1,1.5,2,2.6,2.6c1.1,0.6,2.4,0.9,3.7,0.9c1.3,0,2.5-0.3,3.6-0.9c1.1-0.6,2-1.5,2.6-2.6c0.6-1.1,0.9-2.3,0.9-3.6V44.1c0-0.7,0.1-1.3,0.3-1.8c0.2-0.5,0.5-0.9,0.9-1.3l17.4-17.4C90.2,23.3,89.5,23.3,88.7,35.4z\'/><path fill=\'%2300994B\' d=\'M111.4,49.1L94,66.5c-0.8,0.8-1.7,1.1-2.6,1.1c-1.8,0-3.5-0.7-4.8-2.1c-1.3-1.4-2-3.1-2-5.1c0-2.8,1.1-5.4,3.1-7.4c1.9-1.9,4.4-2.9,7-2.9c1.9,0,3.8,0.4,5.4,1.2l22.4,11.2C118.8,61.9,112.9,55.1,111.4,49.1z\'/><path fill=\'%2300994B\' d=\'M50,89.7L32.6,72.3c-0.8-0.8-1.7-1.1-2.6-1.1c-1.8,0-3.5,0.7-4.8,2.1c-1.3,1.4-2-3.1-2-5.1c0,2.8,1.1,5.4,3.1,7.4c1.9,1.9,4.4,2.9,7,2.9c1.9,0,3.8-0.4,5.4-1.2l22.4-11.2C57.4,76.9,51.5,83.7,50,89.7z\'/><path fill=\'%2300994B\' d=\'M70,140V82.7c0-2.8,1.1-5.4,3.1-7.4c1.9-1.9,4.4-2.9,7-2.9c1.9,0,3.8,0.4,5.4,1.2l-22.4,11.2C52.1,83.7,58,90.5,70,140z\'/><path fill=\'%2300994B\' d=\'M85.7,140V82.7c0-2.8,1.1-5.4,3.1-7.4c1.9-1.9,4.4-2.9,7-2.9c1.9,0,3.8,0.4,5.4,1.2l-22.4,11.2C82.1,83.7,88,90.5,85.7,140z\'/><rect x=\'75\' y=\'70\' width=\'10\' height=\'70\' fill=\'none\' stroke=\'%23007A3E\' stroke-width=\'1.5\' stroke-dasharray=\'8, 4\'/></g></svg>');
+      background-repeat: no-repeat; background-position: center; background-size: contain;
+  }
+  .welcome-title { font-size: 28px; font-weight: 700; color: var(--kuveyt-deep); margin-bottom: 40px; text-align: left; direction: ltr; }
+  .welcome-button { width: 100%; padding: 16px; border-radius: 10px; font-size: 16px; font-weight: 700; margin-bottom: 15px; text-align: center; }
+  .btn-giris { background: var(--kuveyt-mid); color: #fff; }
+  .btn-musteri { background: #fff; color: #FF7043; border: 1px solid #FF7043; }
+  
+  .welcome-actions-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 20px 0 0;
+      margin-top: 50px; position: absolute; bottom: 60px; width: calc(100% - 50px); max-width: 370px;
+  }
+  .action-box {
+      background: #fdfdfd; border: 1px solid #eee; padding: 10px; border-radius: 8px;
+      text-align: center; font-size: 11px; color: #444; height: 90px;
+      display: flex; flex-direction: column; justify-content: space-between; align-items: center; cursor: pointer;
+  }
+  .action-box:hover { border-color: var(--kuveyt-mid); }
+  .action-box .icon-svg { width: 25px; height: 25px; fill: var(--kuveyt-mid); }
+
+  #login-tabs-screen {
+      position: fixed; inset: 0; display: none; flex-direction: column;
+      align-items: center; justify-content: flex-start; padding-top: 50px; background: #fff; z-index: 960;
+  }
+  .login-tabs-header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 18px 20px; }
+  .login-tabs-header h2 { font-size: 18px; font-weight: 700; color: #333; margin: 0; }
+  .login-tabs-container { display: flex; width: calc(100% - 36px); margin: 0 18px 25px; border-radius: 10px; overflow: hidden; background: #f0f0f0; }
+  .login-tab { flex: 1; text-align: center; padding: 10px 0; font-weight: 700; color: #777; background: transparent; cursor: pointer; }
+  .login-tab.active { background: #fff; color: var(--kuveyt-deep); box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+  
+  .login-input-container { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 0 15px; border-bottom: 1px solid #eee; }
+  .login-input-label { flex: 1; color: #999; font-size: 14px; text-align: left; direction: ltr; }
+  .login-input-placeholder { flex: 2; text-align: right; color: #333; font-size: 14px; font-weight: 700; padding: 12px 0; border: none; background: transparent; }
+  .login-input-group { border: 1px solid #ddd; border-radius: 10px; width: calc(100% - 36px); margin: 0 18px 25px; background: #fff; overflow: hidden; }
+
+  .login-tabs-btn-green { width: calc(100% - 36px); margin: 0 18px 15px; padding: 16px; border-radius: 10px; background: var(--kuveyt-mid); color: #fff; font-size: 16px; font-weight: 700; }
+  .login-tabs-btn-secondary { width: calc(100% - 36px); margin: 0 18px 15px; padding: 16px; border-radius: 10px; background: #f7f7f7; color: #FF7043; font-size: 16px; font-weight: 700; border: 1px solid #eee; }
+
+  #transfer-view { padding-bottom: 70px; }
+  .transfer-form-group { padding: 15px 18px; }
+  .transfer-input-field { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; font-size: 1em; text-align: right; outline: none; }
+  .transfer-button-green { width: 100%; padding: 15px; background-color: var(--kuveyt-mid); color: white; border: none; border-radius: 8px; font-size: 1.1em; cursor: pointer; margin-top: 10px; }
+  
+  .success-message {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      background-color: #4CAF50; color: white; padding: 25px 45px; border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); z-index: 1000; display: none; text-align: center; font-size: 1.5em; font-weight: bold;
+  }
+
+  /* --- INTERACTIVE MODALS --- */
+  .custom-modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000;
+      display: none; align-items: center; justify-content: center; padding: 20px;
+  }
+  .custom-modal-content {
+      background: #fff; width: 100%; max-width: 360px; padding: 20px;
+      border-radius: 12px; text-align: right; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
+  .custom-modal-content h3 { color: var(--kuveyt-deep); margin-top: 0; font-size: 18px; }
+  .custom-modal-content p { color: #555; font-size: 14px; line-height: 1.5; }
+  .modal-close-btn {
+      background: var(--kuveyt-mid); color: #fff; width: 100%; padding: 10px;
+      border-radius: 8px; margin-top: 15px; font-weight: bold; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div id="splash-screen">
+    <div class="splash-logo"></div>
+    <div class="splash-text">Kuveyt Türk Mobil</div>
+</div>
+
+<div id="welcome-screen">
+    <div class="welcome-content">
+        <div style="height: 20px;"></div> 
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div class="welcome-logo"></div>
+            <div style="padding: 5px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 12px; color: #555;">TR</div>
+        </div>
+        
+        <div class="welcome-title">Kuveyt Türk Mobil'e<br>Hoş Geldiniz</div>
+
+        <button id="btn-show-login-tabs" class="welcome-button btn-giris">Giriş (تسجيل الدخول)</button>
+        <button class="welcome-button btn-musteri" onclick="openModal('فتح حساب جديد', 'أهلاً بك! يمكنك إتمام إجراءات فتح الحساب الفوري عبر تطبيقنا أو زيارة أقرب فرع.')">Müşteri Olmak İstiyorum</button>
+        
+        <div class="welcome-actions-grid">
+            <div class="action-box" onclick="openModal('حاسبة التمويل والأرباح', 'حاسبة العوائد والأقساط للتمويل السكني، التجاري، والسيارات متوفرة الآن.')">
+                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                 Hesapla (حساب)
+            </div>
+            <div class="action-box" onclick="openModal('خدمات FAST السريعة', 'تحويل الأموال الفوري على مدار الساعة طوال أيام الأسبوع بمبالغ تصل حتى 100,000 ليرة.')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 8V4l-8 8 8 8v-4h8V8z" fill="currentColor"/></svg>
+                 fast <br> İşlemleri
+            </div>
+            <div class="action-box" onclick="openModal('فروع الصراف الآلي وإيصالات E-Dekont', 'استعرض أقرب أجهزة الصراف الآلي لـ Kuveyt Türk أو اطبع إيصالاتك الرقمية المعتمدة.')">
+                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                 ATM / E-Dekont
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="login-tabs-screen">
+    <div class="login-tabs-header">
+        <button onclick="showScreen('welcome-screen')" class="header-icon" style="color: #333;">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" fill="currentColor"/></svg>
+        </button>
+        <h2>Giriş Yap (تسجيل الدخول)</h2>
+        <div></div>
+    </div>
+
+    <div class="login-tabs-container">
+        <span id="tab-bireysel" class="login-tab active" data-target="bireysel">Bireysel (فردي)</span>
+        <span id="tab-kurumsal" class="login-tab" data-target="kurumsal">Kurumsal (شركات)</span>
+    </div>
+
+    <div id="bireysel-content" style="width: 100%;">
+        <div class="login-input-group">
+            <div class="login-input-container">
+                <div class="login-input-label">Müşteri No</div>
+                <input id="musteri-no" type="tel" class="login-input-placeholder" value="01227043648" placeholder="Giriniz">
+            </div>
+            <div class="login-input-container">
+                <div class="login-input-label">Şifre</div>
+                <input id="sifre" type="password" class="login-input-placeholder" value="120120" placeholder="Giriniz">
+            </div>
+            <div class="login-input-container" style="border-bottom: none;">
+                <div class="login-input-label">Kullanıcı Adı (اختياري)</div>
+                <input id="kullanici-adi" type="text" class="login-input-placeholder" placeholder="Giriniz">
+            </div>
+        </div>
+        
+        <button id="manual-login-btn-tabs" class="login-tabs-btn-green">Giriş (تسجيل الدخول)</button>
+        <button class="login-tabs-btn-secondary" onclick="openModal('استعادة كلمة المرور', 'يرجى اتباع الخطوات على الشاشة أو الاتصال بخدمة العملاء عبر الرقم 4440123.')">Şifremi Unuttum / Anında Şifre</button>
+        <button class="login-tabs-btn-secondary" onclick="openModal('إلغاء حظر SIM', 'يمكنك إلغاء حظر شريحة الاتصال خطوة بخطوة للتحقق من الأمان المالي.')">SIM Bloke Kaldır</button>
+        <button class="login-tabs-btn-secondary" onclick="showScreen('welcome-screen')">Müşteri Olmak İstiyorum</button>
+    </div>
+
+    <div id="kurumsal-content" style="display: none; width: 100%; text-align: center; padding: 20px;">
+        <h3 style="color: #007A3E; margin-top: 20px;">واجهة تسجيل دخول الشركات (Kurumsal)</h3>
+        <p style="color: #555;">يرجى استخدام بيانات الحساب التجاري المعتمد للشركات والمؤسسات.</p>
+        <button class="login-tabs-btn-green" onclick="alert('تم تفعيل جلسة الشركات الوهمية بنجاح.'); showSplashBeforeMain();">دخول الشركات</button>
+    </div>
+</div>
+
+<div id="success-message" class="success-message">
+    ✅ İşlem Başarılı! <br> (تم التحويل بنجاح)
+</div>
+
+<!-- Modal عام للتفاعل الحقيقي -->
+<div id="interactive-modal" class="custom-modal">
+    <div class="custom-modal-content">
+        <h3 id="modal-title">عنوان النافذة</h3>
+        <p id="modal-desc">نص تفصيلي للخدمة أو الميزة...</p>
+        <button class="modal-close-btn" onclick="closeModal()">إغلاق</button>
+    </div>
+</div>
+
+<div id="app-container">
+  <main id="main-content" aria-hidden="true" style="display:none;">
+
+    <div id="home-view" class="panel-view panel-active">
+        
+      <div class="app-header">
+        <div class="profile-section">
+            <div class="profile-pic-wrapper">
+                <div class="profile-pic"></div>
+                <span class="vip-badge">VIP</span>
+            </div>
+            <div class="profile-texts">
+                <div class="profile-name-row">
+                    <span>Mostafa Barbour</span>
+                </div>
+                <span class="vip-title-tag">Özel Bankacılık</span>
+            </div>
+        </div>
+        <div>
+            <button class="header-icon" onclick="openModal('البحث الشامل', 'أدخل كلمة البحث للوصول السريع إلى العمليات، الحسابات، والفواتير السابقة.')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/></svg>
+            </button>
+            <button class="header-icon" onclick="openModal('التنبيهات والإشعارات', 'ليس لديك أي إشعارات بنكية جديدة غير مدفوعة حتى الآن.')">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6V9c0-3.1-2.03-5.87-5-6.76V2h-2v.24C8.03 3.13 6 5.9 6 9v7l-2 2v1h16v-1l-2-2z" fill="currentColor"/></svg>
+            </button>
+        </div>
+      </div>
+      
+      <div class="info-bar">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/></svg>
+          تم تحديث سعر صرف الليرة مقابل الدولار إلى **41.83**
+      </div>
+
+      <div class="primary-account-box">
+        <div class="tab-bar">
+            <span class="tab-item active" onclick="switchTab('My Account')">حساباتي</span>
+            <span class="tab-item" onclick="switchTab('My Card')">بطاقتي</span>
+        </div>
+        
+        <div id="my-account-tab-content">
+            <div class="account-summary">
+                <div class="account-header-top">
+                    <div class="icon-text">
+                        <svg class="icon-svg" viewBox="0 0 24 24" style="fill: var(--kuveyt-mid);"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zM4 6h16v2H4V6zm0 12v-6h16v6H4z"/></svg>
+                        <span id="account-title-label">حساب - ليرة تركية</span>
+                    </div>
+                    <!-- مبدل العملات الديناميكي للحساب -->
+                    <select id="account-currency-switcher" class="currency-switcher-select" onchange="changeAccountCurrency(this.value)">
+                        <option value="TRY" selected>TRY (₺)</option>
+                        <option value="USD">USD ($)</option>
+                        <option value="EUR">EUR (€)</option>
+                        <option value="GBP">GBP (£)</option>
+                    </select>
+                </div>
+                
+                <div class="account-balance" id="main-account-display">₺17,640,000.00</div>
+                <div class="secondary-balance-text" id="secondary-eq-text">ما يعادل: **$<span id="balance-usd">421,706.91</span>**</div> 
+            </div>
+            
+            <a href="#" class="view-all-link" onclick="openModal('جميع الحسابات', 'لديك 4 حسابات نشطة (حساب جاري، حساب ذهب، حساب مشاركة، وحساب وديعة خاصة).')">عرض كل حساباتي</a>
+        </div>
+        
+        <div class="card-section-wrapper" style="display:none;" id="my-card-tab-content">
+            <h3 class="card-box-header">بطاقاتي المتوفرة</h3>
+            
+            <div class="card-container">
+                <div class="card-title">بطاقة الائتمان (**** 5555)</div>
+                <div class="card-details-row">
+                    <div class="card-info-label">الحد المتاح (ل.ت)</div>
+                    <div class="card-balance-tl" id="card-limit-4m">4,300,000.00 TL</div>
+                </div>
+                <div class="card-details-row">
+                    <div class="card-info-label">القيمة التقريبية (دولار)</div>
+                    <div class="card-balance-usd">$102,787.23</div>
+                </div>
+            </div>
+
+            <div class="card-container" style="border: 2px solid var(--kuveyt-mid);">
+                <div class="card-title" style="color: var(--kuveyt-mid);">بطاقة التوفير الممتازة (**** 4545)</div>
+                <div class="card-details-row">
+                    <div class="card-info-label">الرصيد المتاح (ل.ت)</div>
+                    <div class="card-balance-tl" id="card-balance-1trillion">17,640,000.00 TL</div>
+                </div>
+                <div class="card-details-row">
+                    <div class="card-info-label">القيمة التقريبية (دولار)</div>
+                    <div class="card-balance-usd">$421,706.91</div>
+                </div>
+            </div>
+
+            <div class="card-container">
+                <div class="card-title">بطاقة Miles & Smiles (**** 4444)</div>
+                <div class="card-details-row">
+                    <div class="card-info-label">الحد المتاح (ل.ت)</div>
+                    <div class="card-balance-tl" id="card-limit-5m">5,320,000.00 TL</div>
+                </div>
+                <div class="card-details-row">
+                    <div class="card-info-label">القيمة التقريبية (دولار)</div>
+                    <div class="card-balance-usd">$127,175.71</div>
+                </div>
+            </div>
+        </div> 
+      </div>
+      
+      <div class="exclusive-section">
+        <div class="exclusive-header">
+            <span>حصري لك</span>
+            <a href="#" style="font-size: 14px; font-weight: 400; color: var(--kuveyt-mid);" onclick="openModal('العروض الحصرية', 'كل العروض الترويجية المخصصة لعملاء Özel Bankacılık المتميزين متاحة هنا.')">عرض الكل</a>
+        </div>
+        <div class="exclusive-card">
+            <div class="card-promo-content">
+                <svg class="icon-svg" viewBox="0 0 24 24" style="fill: #FFC000; width: 40px; height: 40px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <div class="promo-text" style="margin-top: 8px;">
+                    اكسب **2500 ميل** إضافي عند إنفاقك أكثر من **₺50,000** هذا الشهر باستخدام بطاقة Miles & Smiles.
+                </div>
+            </div>
+            <div class="promo-actions">
+                <button class="btn-skip" onclick="openModal('إخفاء العرض', 'تم إخفاء العرض بناءً على طلبك المؤقت.')">ليس مهتماً</button>
+                <button class="btn-join" onclick="openModal('تفعيل العرض', 'تهانينا! تم تفعيل حملة الأميال الإضافية على بطاقتك بنجاح.')">انضم الآن</button>
+            </div>
+        </div>
+      </div>
+
+      <div class="fast-transactions-section">
+        <div class="fast-transactions-header">
+            <span>العمليات السريعة</span>
+            <a href="#" style="font-size: 14px; font-weight: 400; color: var(--kuveyt-mid);" onclick="navigate('Menu')">عرض الكل</a>
+        </div>
+        <div class="fast-transactions-grid">
+            <div class="fast-transaction-item" onclick="navigate('FX')">
+                <div class="item-icon" style="background: #5D4037;">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-3.29-3.29-7.29 7.29L3 19l5.5-5.5 3.29 3.29 4.88-4.88L20 10V6z"/></svg>
+                </div>
+                <span>الاستثمار</span>
+            </div>
+            <div class="fast-transaction-item" onclick="openModal('دفع الفواتير والرسوم', 'اختر المؤسسة أو الجامعة لدفع الرسوم المستحقة بشكل آلي مباشر.')">
+                <div class="item-icon" style="background: #1976D2;">
+                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                </div>
+                <span>دفع فواتير/رسوم</span>
+            </div>
+            <div class="fast-transaction-item" onclick="openModal('الادخار والتوفير الذكي', 'ابدأ خطة ادخار ذهبية أو نقدية تتناسب مع أهدافك الاستثمارية المستقبلية.')">
+                <div class="item-icon" style="background: #FFC000;">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 8-3.59 8-8s-3.59-8-8-8zm1 15h-2v-6h-2V9h4v8z"/></svg>
+                </div>
+                <span>الادخار والتوفير</span>
+            </div>
+            <div class="fast-transaction-item" onclick="navigate('MoneyTransfer')">
+                <div class="item-icon" style="background: var(--kuveyt-mid);">
+                     <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 8V4l-8 8 8 8v-4h8V8z" fill="currentColor"/></svg>
+                </div>
+                <span>تحويل الأموال</span>
+            </div>
+        </div>
+      </div>
+      
+      <div class="transactions-section">
+        <h3>آخر العمليات</h3>
+        <div class="transaction-item">
+            <div class="tx-details-group">
+                <div class="tx-title">شراء سيارة: BMW M340i</div>
+                <div class="tx-details">وكالة السيارات - 15.08.2025 | $64,000.00</div>
+            </div>
+            <span class="tx-amount" style="color: #cc0000;">-₺2,107,520.00</span>
+        </div>
+        <div class="transaction-item">
+            <div class="tx-details-group">
+                <div class="tx-title">استثمار في صندوق (الذهب)</div>
+                <div class="tx-details">شراء | 12.07.2025</div>
+            </div>
+            <span class="tx-amount" style="color: #cc0000;">-₺50,000.00</span>
+        </div>
+        <div class="transaction-item">
+            <div class="tx-details-group">
+                <div class="tx-title">تحويل خارجي (دولار أمريكي)</div>
+                <div class="tx-details">مرجع: **112576960** | حساب المستلم: 8875988-1</div>
+            </div>
+            <span class="tx-amount" style="color: #cc0000;">-₺69,820.50</span>
+        </div>
+        <div class="transaction-item" id="ship-income-transaction" style="display:none;">
+            <div class="tx-details-group">
+                <div class="tx-title">دخل سفينة شحن: إيداع دوري</div>
+                <div class="tx-details">دخل تلقائي | </div>
+            </div>
+            <span class="tx-amount" style="color: var(--kuveyt-mid);">+<span id="income-amount-display">89,000.00</span>$</span>
+        </div>
+        <div class="transaction-item">
+            <div class="tx-details-group">
+                <div class="tx-title">تحويل داخلي (راتب)</div>
+                <div class="tx-details">من: حساب الشركة | $5,000.00</div>
+            </div>
+            <span class="tx-amount" style="color: var(--kuveyt-mid);">+₺209,150.00</span>
+        </div>
+        <a href="#" class="view-all-link" style="margin-top: 15px;" onclick="openModal('سجل الحركات الكامل', 'عرض الأرشيف الكامل للحركات والعمليات المصرفية الخاصة بك.')">عرض كل العمليات</a>
+      </div>
+      
+      <div class="private-banking-section">
+          <h3>للتواصل مع ممثل البنك الخاص بك (Özel Bankacılık Temsilcisi)</h3>
+          <div class="contact-buttons">
+              <button class="contact-btn" onclick="openModal('الاتصال الهاتفي المباشر', 'جاري توصيلك بممثل الحساب الخاص بك السيد محمد أوزدمير...')">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.34 1.02-.17 1.12.56 2.33.88 3.57.88.5 0 .9.4 1 .9V20c0 .5-.4.9-1 .9C10.74 20.9 3 13.16 3 3.5c0-.5.4-.9 1-.9h3.5c.4 0 .8.3 1 .8.1.9.3 1.9.8 2.8l-2.2 2.2z" fill="currentColor"/></svg>
+              </button>
+              <button class="contact-btn" onclick="openModal('مكالمة الفيديو المؤمنة', 'جاري فتح الكاميرا وتأمين الاتصال المشفر مع مدير محفظتك الاستثمارية...')">
+                   <svg class="icon-svg" viewBox="0 0 24 24"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" fill="currentColor"/></svg>
+              </button>
+              <button class="contact-btn" onclick="openModal('الدردشة الخاصة المباشرة', 'تم فتح نافذة الدردشة الفورية المشفرة مع فريق الخدمات المصرفية المميزة.')">
+                  <svg class="icon-svg" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" fill="currentColor"/></svg>
+              </button>
+          </div>
+      </div>
+    </div>
+    
+    <div id="transfer-view" class="panel-view">
+        <div class="app-header">
+            <button onclick="navigate('Home')" class="header-icon" style="color: #333;">
+                <svg class="icon-svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" fill="currentColor"/></svg>
+            </button>
+            <h2>Para Transferi (تحويل الأموال)</h2>
+            <div></div>
+        </div>
+
+        <div class="info-bar">
+            تحويل الأموال بين الحسابات المحلية أو الدولية.
+        </div>
+        
+        <div class="transfer-form-group">
+            <select class="transfer-input-field" id="transfer-account-select">
+                <option value="" disabled selected>Hesap Seç (اختر حساب)</option>
+                <option value="card-balance-1trillion">بطاقة التوفير الممتازة (الرصيد القابل للخصم)</option>
+                <option value="card-limit-4m">بطاقة الائتمان (4,300,000.00 TL)</option>
+            </select>
+            <input type="text" class="transfer-input-field" placeholder="IBAN (TR...)">
+            <input type="number" class="transfer-input-field" id="transfer-amount-input" placeholder="Tutar (المبلغ) - بالليرة التركية">
+            <input type="text" class="transfer-input-field" placeholder="Açıklama (الوصف)">
+            <button class="transfer-button-green" onclick="handleTransfer()">Devam Et (استمرار)</button>
+        </div>
+    </div>
+
+    <!-- صفحة تفاعلية لإضافات القائمة الأخرى -->
+    <div id="fx-view" class="panel-view" style="padding: 20px; text-align: center;">
+        <h3 style="color: var(--kuveyt-deep); margin-top: 40px;">شاشة الصرف والأسواق المالية (FX & Investment)</h3>
+        <p style="color: #666;">أسعار الذهب، العملات الأجنبية، وأسواق الأسهم العالمية والمحلية مباشرة.</p>
+        <button class="login-tabs-btn-green" style="margin-top: 20px;" onclick="openModal('تداول الذهب والعملات', 'تم فتح منصة التداول الآني بنجاح.')">بدء التداول الفوري</button>
+    </div>
+
+    <div id="status-view" class="panel-view" style="padding: 20px; text-align: center;">
+        <h3 style="color: var(--kuveyt-deep); margin-top: 40px;">الوضع المالي الشامل (Financial Status)</h3>
+        <p style="color: #666;">مخططات تحليل الأصول والالتزامات والمحافظ الاستثمارية الخاصة بك.</p>
+    </div>
+
+    <div id="menu-view" class="panel-view" style="padding: 20px; text-align: center;">
+        <h3 style="color: var(--kuveyt-deep); margin-top: 40px;">قائمة الخدمات المصرفية الشاملة</h3>
+        <p style="color: #666;">جميع خدمات البنك، البطاقات، التمويل، والإعدادات الشخصية متوفرة هنا.</p>
+        <button class="login-tabs-btn-green" style="margin-top: 20px;" onclick="openModal('إعدادات الأمان', 'إدارة بصمة الإصبع، المصادقة الثنائية، وتغيير كلمة السر.')">إعدادات الأمان والحماية</button>
+    </div>
+
+  </main>
+
+  <div class="app-navbar">
+    <div class="nav-item nav-item-active" id="nav-home" onclick="navigate('Home')">
+      <span class="nav-icon-wrapper"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="currentColor"/></svg></span>
+      <span>الرئيسية</span>
+    </div>
+    <div class="nav-item" id="nav-fx" onclick="navigate('FX')">
+      <span class="nav-icon-wrapper"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M11.9 2C6.4 2 2 6.4 2 11.9s4.4 9.9 9.9 9.9 9.9-4.4 9.9-9.9S17.4 2 11.9 2zm0 18.2c-4.6 0-8.3-3.7-8.3-8.3s3.7-8.3 8.3-8.3 8.3 3.7 8.3 8.3-3.7 8.3-8.3 8.3zM13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7z" fill="currentColor"/></svg></span>
+      <span>صرف/استثمار</span>
+    </div>
+    <div class="nav-item" id="nav-status" onclick="navigate('MyStatus')">
+      <span class="nav-icon-wrapper"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"/></svg></span>
+      <span>وضعي المالي</span>
+    </div>
+    <div class="nav-item" id="nav-transfer" onclick="navigate('MoneyTransfer')">
+      <span class="nav-icon-wrapper"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 8V4l-8 8 8 8v-4h8V8z" fill="currentColor"/></svg></span>
+      <span>تحويل الأموال</span>
+    </div>
+    <div class="nav-item" id="nav-menu" onclick="navigate('Menu')">
+      <span class="nav-icon-wrapper"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/></svg></span>
+      <span>القائمة</span>
+    </div>
+  </div>
+
+</div> 
+<script>
+const CORRECT_MUSTERI_NO = '01227043648'; 
+const CORRECT_SIFRE = '120120'; 
+
+const screens = {
+    'splash-screen': document.getElementById('splash-screen'),
+    'welcome-screen': document.getElementById('welcome-screen'),
+    'login-tabs-screen': document.getElementById('login-tabs-screen'),
+};
+const mainContent = document.getElementById('main-content');
+const loginTabs = document.querySelectorAll('.login-tab');
+const bireyselContent = document.getElementById('bireysel-content');
+const kurumsalContent = document.getElementById('kurumsal-content');
+const manualLoginBtnTabs = document.getElementById('manual-login-btn-tabs');
+const btnShowLoginTabs = document.getElementById('btn-show-login-tabs');
+
+// متغيرات الأرصدة والعملات
+let baseBalanceTRY = 17640000.00; 
+const EXCHANGE_RATES = {
+    'TRY': 1.0,
+    'USD': 1 / 41.83,
+    'EUR': 1 / 45.20,
+    'GBP': 1 / 53.10
+};
+const CURRENCY_SYMBOLS = {
+    'TRY': '₺',
+    'USD': '$',
+    'EUR': '€',
+    'GBP': '£'
+};
+let currentSelectedCurrency = 'TRY';
+
+const cardBalanceElementTrillion = document.getElementById('card-balance-1trillion');
+const successMessage = document.getElementById('success-message');
+const balanceElementUSD = document.getElementById('balance-usd');
+const shipIncomeTransaction = document.getElementById('ship-income-transaction');
+const incomeAmountDisplay = document.getElementById('income-amount-display');
+
+const incomeAmountUSD = 89000.00; 
+const incomeIntervalMS = 3600000;
+let userBalanceUSD = baseBalanceTRY * EXCHANGE_RATES['USD'];
+
+if (incomeAmountDisplay) {
+    incomeAmountDisplay.textContent = formatCurrency(incomeAmountUSD);
+}
+
+function formatCurrency(amount) {
+    if (isNaN(amount)) return '0.00';
+    if (amount <= 0) return '0.00'; 
+    return amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
+// دالة التبديل الفوري للعملات الديناميكية للحساب
+function changeAccountCurrency(currencyCode) {
+    currentSelectedCurrency = currencyCode;
+    const rate = EXCHANGE_RATES[currencyCode];
+    const symbol = CURRENCY_SYMBOLS[currencyCode];
+    const convertedAmount = baseBalanceTRY * rate;
+
+    // تحديث عنوان الحساب ليطابق العملة المختارة
+    const names = { 'TRY': 'ليرة تركية', 'USD': 'دولار أمريكي', 'EUR': 'يورو', 'GBP': 'جنيه إسترليني' };
+    document.getElementById('account-title-label').textContent = `حساب - ${names[currencyCode]}`;
+
+    // تحديث الرصيد الرئيسي بالعملة المختارة
+    const formattedVal = `${symbol}${formatCurrency(convertedAmount)}`;
+    document.getElementById('main-account-display').textContent = formattedVal;
+
+    // تحديث القيمة المعادلة بالدولار أو العملة الأساسية في السطر الفرعي
+    const eqUSD = baseBalanceTRY * EXCHANGE_RATES['USD'];
+    document.getElementById('secondary-eq-text').innerHTML = `ما يعادل: **$<span id="balance-usd">${formatCurrency(eqUSD)}</span>**`;
+}
+
+function updateBalancePeriodically() {
+    const incomeAmountTL = incomeAmountUSD * (1 / EXCHANGE_RATES['USD']);
+    baseBalanceTRY += incomeAmountTL; 
+    userBalanceUSD += incomeAmountUSD;
+
+    // إعادة حساب القيمة المعروضة بناءً على العملة المختارة حالياً
+    changeAccountCurrency(currentSelectedCurrency);
+    
+    if (cardBalanceElementTrillion) {
+        cardBalanceElementTrillion.textContent = formatCurrency(baseBalanceTRY) + ' TL';
+        document.getElementById('main-account-display').textContent = '₺' + formatCurrency(baseBalanceTRY);
+    }
+
+    if (shipIncomeTransaction) {
+        shipIncomeTransaction.style.display = 'flex'; 
+        const dateElement = shipIncomeTransaction.querySelector('.tx-details');
+        const now = new Date();
+        const formattedDate = `${now.getDate().toString().padStart(2, '0')}.${(now.getMonth() + 1).toString().padStart(2, '0')}.${now.getFullYear()}`;
+        dateElement.innerHTML = `دخل تلقائي | ${formattedDate} - ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}`;
+    }
+}
+
+function handleTransfer() {
+    const selectedAccountID = document.getElementById('transfer-account-select').value;
+    const amountInput = document.getElementById('transfer-amount-input').value;
+    const amount = parseFloat(amountInput);
+
+    if (!selectedAccountID || amount <= 0 || isNaN(amount)) {
+        alert("الرجاء اختيار الحساب وإدخال مبلغ صحيح للتحويل.");
+        return;
+    }
+    if (selectedAccountID !== 'card-balance-1trillion') {
+        alert("يرجى اختيار 'بطاقة التوفير الممتازة' لتتمكن من خصم الرصيد.");
+        return;
+    }
+    if (baseBalanceTRY < amount) {
+        alert("الرصيد غير كافٍ لإجراء هذا التحويل.");
+        return;
+    }
+
+    baseBalanceTRY -= amount;
+    userBalanceUSD = baseBalanceTRY * EXCHANGE_RATES['USD'];
+    
+    changeAccountCurrency(currentSelectedCurrency);
+
+    successMessage.style.display = 'block';
+    setTimeout(() => {
+        successMessage.style.display = 'none';
+        navigate('Home'); 
+        document.getElementById('nav-home').classList.add('nav-item-active');
+        document.getElementById('nav-transfer').classList.remove('nav-item-active');
+    }, 3000);
+}
+
+// نوافذ تفاعلية منبثة حقيقية بدلاً من الإشعارات الوهمية
+function openModal(title, description) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-desc').textContent = description;
+    document.getElementById('interactive-modal').style.display = 'flex';
+}
+function closeModal() {
+    document.getElementById('interactive-modal').style.display = 'none';
+}
+
+function showScreen(screenId) {
+    Object.values(screens).forEach(screen => screen.style.display = 'none');
+    mainContent.style.display = 'none';
+
+    if (screens[screenId]) {
+        screens[screenId].style.display = 'flex';
+        if (screenId === 'splash-screen') {
+             screens[screenId].classList.remove('fade-out');
+             screens[screenId].style.opacity = '1';
+        }
+    } else if (screenId === 'main') {
+        mainContent.style.display = 'block';
+        navigate('Home'); 
+    }
+}
+
+function showSplashBeforeMain() {
+    showScreen('splash-screen');
+    setTimeout(() => {
+        screens['splash-screen'].classList.add('fade-out'); 
+        setTimeout(() => {
+            screens['splash-screen'].style.display = 'none'; 
+            showScreen('main'); 
+            updateBalancePeriodically(); 
+            setInterval(updateBalancePeriodically, incomeIntervalMS);
+        }, 500); 
+    }, 2000); 
+}
+
+function handleTabSwitch(event) {
+    const target = event.target.dataset.target;
+    loginTabs.forEach(tab => tab.classList.remove('active'));
+    event.target.classList.add('active');
+
+    bireyselContent.style.display = 'none';
+    kurumsalContent.style.display = 'none';
+
+    if (target === 'bireysel') {
+        bireyselContent.style.display = 'block';
+    } else if (target === 'kurumsal') {
+        kurumsalContent.style.display = 'block';
+    }
+}
+
+function handleLoginAttempt() {
+    const musteriNo = document.getElementById('musteri-no').value.trim();
+    const sifre = document.getElementById('sifre').value.trim();
+
+    if (musteriNo === CORRECT_MUSTERI_NO && sifre === CORRECT_SIFRE) {
+        showSplashBeforeMain();
+    } else {
+        alert('بيانات الدخول غير صحيحة. يرجى التأكد من رقم العميل وكلمة السر.\nللتجربة: 01227043648 | 120120');
+    }
+}
+
+const views = {
+    'Home': document.getElementById('home-view'),
+    'MoneyTransfer': document.getElementById('transfer-view'),
+    'FX': document.getElementById('fx-view'),
+    'MyStatus': document.getElementById('status-view'),
+    'Menu': document.getElementById('menu-view'),
+};
+
+const navItems = document.querySelectorAll('.app-navbar .nav-item');
+
+function switchTab(tabName) {
+    const tabs = document.querySelectorAll('.tab-item');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    const accountContent = document.getElementById('my-account-tab-content');
+    const cardContent = document.getElementById('my-card-tab-content');
+    
+    if (tabName === 'My Account') {
+        document.querySelector('.tab-bar .tab-item:nth-child(1)').classList.add('active');
+        accountContent.style.display = 'block';
+        cardContent.style.display = 'none';
+    } else if (tabName === 'My Card') {
+        document.querySelector('.tab-bar .tab-item:nth-child(2)').classList.add('active');
+        accountContent.style.display = 'none';
+        cardContent.style.display = 'block';
+    }
+}
+
+function navigate(page) {
+    Object.values(views).forEach(view => view.classList.remove('panel-active'));
+
+    navItems.forEach((item) => {
+        item.classList.remove('nav-item-active'); 
+        if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(`'${page}'`)) {
+             item.classList.add('nav-item-active');
+        }
+    });
+
+    if (views[page]) {
+        views[page].classList.add('panel-active');
+        if (page === 'Home') {
+            switchTab('My Account'); 
+        }
+    } else {
+        document.getElementById('home-view').classList.add('panel-active');
+        document.getElementById('nav-home').classList.add('nav-item-active');
+    }
+}
+
+btnShowLoginTabs.onclick = () => showScreen('login-tabs-screen');
+loginTabs.forEach(tab => { tab.onclick = handleTabSwitch; });
+manualLoginBtnTabs.onclick = handleLoginAttempt;
+
+window.addEventListener('load', () => {
+    const oldLoginScreen = document.getElementById('login-screen');
+    if (oldLoginScreen) oldLoginScreen.style.display = 'none';
+
+    showScreen('welcome-screen');
+    bireyselContent.style.display = 'block';
+    kurumsalContent.style.display = 'none';
+
+    changeAccountCurrency('TRY');
+    
+    Object.values(views).forEach(view => view.classList.remove('panel-active'));
+});
+</script>
+</body>
+</html>
