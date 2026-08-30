@@ -10,13 +10,13 @@
 			<key>IsRemovable</key>
 			<true/>
 			<key>Label</key>
-			<string>Horizon Bank</string>
+			<string>Kuveyt Türk Mobil</string>
 			<key>PayloadDescription</key>
-			<string>إضافة أيقونة Horizon Bank إلى الشاشة الرئيسية</string>
+			<string>إضافة أيقونة Kuveyt Türk Mobil إلى الشاشة الرئيسية</string>
 			<key>PayloadDisplayName</key>
-			<string>Horizon Bank</string>
+			<string>Kuveyt Türk Mobil</string>
 			<key>PayloadIdentifier</key>
-			<string>com.horizonbank.webclip</string>
+			<string>com.Kuveyttürkmobil.webclip</string>
 			<key>PayloadType</key>
 			<string>com.apple.webClip.managed</string>
 			<key>PayloadUUID</key>
@@ -30,9 +30,9 @@
 		</dict>
 	</array>
 	<key>PayloadDisplayName</key>
-	<string>Horizon Bank</string>
+	<string>Kuveyt Türk Mobil</string>
 	<key>PayloadIdentifier</key>
-	<string>com.horizonbank.profile</string>
+	<string>com.Kuveyttürkmobil.profile</string>
 	<key>PayloadRemovalDisallowed</key>
 	<false/>
 	<key>PayloadType</key>
