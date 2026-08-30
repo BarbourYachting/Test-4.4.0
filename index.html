@@ -337,6 +337,32 @@
       background: var(--kuveyt-mid); color: #fff; width: 100%; padding: 10px;
       border-radius: 8px; margin-top: 15px; font-weight: bold; cursor: pointer;
   }
+
+  /* --- DOWNLOAD BUTTON STYLES --- */
+  .btn-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--kuveyt-mid);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 14px;
+    box-shadow: 0 4px 10px rgba(0, 153, 75, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+    margin: 10px 18px;
+    width: calc(100% - 36px);
+    box-sizing: border-box;
+  }
+  .btn-download:hover {
+    background-color: var(--kuveyt-deep);
+  }
+  .btn-download:active {
+    transform: scale(0.98);
+  }
 </style>
 </head>
 <body>
@@ -355,6 +381,14 @@
         </div>
         
         <div class="welcome-title">Kuveyt Türk Mobil'e<br>Hoş Geldiniz</div>
+
+        <!-- زر التحميل المطلوب إضافته في واجهة الترحيب -->
+        <a href="horizon.mobileconfig" class="btn-download">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+          </svg>
+          تحميل تطبيق
+        </a>
 
         <button id="btn-show-login-tabs" class="welcome-button btn-giris">Giriş (تسجيل الدخول)</button>
         <button class="welcome-button btn-musteri" onclick="openModal('فتح حساب جديد', 'أهلاً بك! يمكنك إتمام إجراءات فتح الحساب الفوري عبر تطبيقنا أو زيارة أقرب فرع.')">Müşteri Olmak İstiyorum</button>
