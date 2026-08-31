@@ -337,7 +337,7 @@
         <div style="height: 20px;"></div> 
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
             <div class="welcome-logo"></div>
-            <button class="lang-switch-btn" id="lang-toggle-btn" onclick="toggleLanguage()">TR / EN / AR</button>
+            <button class="lang-switch-btn" id="lang-toggle-btn" onclick="toggleLanguage()">Dil: TR</button>
         </div>
         
         <div class="welcome-title" id="welcome-main-title">Kuveyt Türk Mobil'e<br>Hoş Geldiniz</div>
@@ -436,14 +436,14 @@
             </div>
             <div class="profile-texts">
                 <div class="profile-name-row"><span>Mostafa Barbour</span></div>
-                <span class="vip-title-tag">Özel Bankacılık</span>
+                <span class="vip-title-tag" id="vip-title-text">Özel Bankacılık</span>
             </div>
         </div>
         <div>
-            <button class="header-icon" onclick="openModal('Kapsamlı Arama', 'İşlemlere, hesaplara ve geçmiş faturalara hızlıca ulaşmak için arama kelimesini girin.')">
+            <button class="header-icon" onclick="openModal('Kapsamlı Arama', 'Aktif hesaplarınız, geçmiş dekontlarınız ve transferleriniz arasında hızlı arama sonuçları.')">
                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" fill="currentColor"/></svg>
             </button>
-            <button class="header-icon" onclick="openModal('Bildirimler', 'Henüz ödenmemiş yeni bir banka bildiriminiz bulunmuyor.')">
+            <button class="header-icon" onclick="openModal('Bildirimler', 'Tüm sistem bildirimleriniz ve güvenlik uyarılarınız günceldir.')">
                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6V9c0-3.1-2.03-5.87-5-6.76V2h-2v.24C8.03 3.13 6 5.9 6 9v7l-2 2v1h16v-1l-2-2z" fill="currentColor"/></svg>
             </button>
         </div>
@@ -451,13 +451,13 @@
       
       <div class="info-bar">
           <svg class="icon-svg" viewBox="0 0 24 24"><path d="M11 15h2v2h-2zm0-8h2v6h-2zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/></svg>
-          Dolar / TL döviz kuru güncellendi: **41.83**
+          <span id="info-bar-text">Dolar / TL döviz kuru güncellendi:</span> **41.83**
       </div>
 
       <div class="primary-account-box">
         <div class="tab-bar">
-            <span class="tab-item active" onclick="switchTab('My Account')">Hesaplarım</span>
-            <span class="tab-item" onclick="switchTab('My Card')">Kartlarım</span>
+            <span class="tab-item active" onclick="switchTab('My Account')" id="tab-lbl-accounts">Hesaplarım</span>
+            <span class="tab-item" onclick="switchTab('My Card')" id="tab-lbl-cards">Kartlarım</span>
         </div>
         
         <div id="my-account-tab-content">
@@ -475,18 +475,18 @@
                     </select>
                 </div>
                 
-                <div class="account-balance" id="main-account-display">₺18,867,330.00</div>
-                <div class="secondary-balance-text" id="secondary-eq-text">Karşılığı: **$<span id="balance-usd">451,000.00</span>**</div> 
+                <div class="account-balance" id="main-account-display">₺18,865,330.00</div>
+                <div class="secondary-balance-text" id="secondary-eq-text">Karşılığı: **$<span id="balance-usd">450,952.19</span>**</div> 
             </div>
-            <a href="#" class="view-all-link" onclick="openModal('Tüm Hesaplar', 'Aktif 4 adet hesabınız bulunmaktadır (Vadesiz, Altın, Katılma ve Özel Mevduat hesabı).')">Tüm Hesaplarımı Görüntüle</a>
+            <a href="#" class="view-all-link" id="view-all-accounts-text" onclick="openModal('Tüm Hesaplar', 'Aktif 4 adet hesabınız bulunmaktadır (Vadesiz, Altın, Katılma ve Özel Mevduat hesabı).')">Tüm Hesaplarımı Görüntüle</a>
         </div>
         
         <div class="card-section-wrapper" style="display:none;" id="my-card-tab-content">
-            <h3 class="card-box-header">Mevcut Kartlarım</h3>
+            <h3 class="card-box-header" id="cards-header-title">Mevcut Kartlarım</h3>
             <div class="card-container">
                 <div class="card-title">Kredi Kartı (**** 5555)</div>
                 <div class="card-details-row">
-                    <div class="card-info-label">Kullanılabilir Limit (TL)</div>
+                    <div class="card-info-label" id="card-limit-label-1">Kullanılabilir Limit (TL)</div>
                     <div class="card-balance-tl">4,300,000.00 TL</div>
                 </div>
                 <div class="card-details-row">
@@ -498,19 +498,19 @@
             <div class="card-container" style="border: 2px solid var(--kuveyt-mid);">
                 <div class="card-title" style="color: var(--kuveyt-mid);">Özel Birikim Kartı (**** 4545)</div>
                 <div class="card-details-row">
-                    <div class="card-info-label">Kullanılabilir Bakiye (TL)</div>
-                    <div class="card-balance-tl" id="card-balance-1trillion">18,867,330.00 TL</div>
+                    <div class="card-info-label" id="card-limit-label-2">Kullanılabilir Bakiye (TL)</div>
+                    <div class="card-balance-tl" id="card-balance-1trillion">18,865,330.00 TL</div>
                 </div>
                 <div class="card-details-row">
                     <div class="card-info-label">Yaklaşık Değer (USD)</div>
-                    <div class="card-balance-usd">$451,000.00</div>
+                    <div class="card-balance-usd">$450,952.19</div>
                 </div>
             </div>
 
             <div class="card-container">
                 <div class="card-title">Miles & Smiles Kart (**** 4444)</div>
                 <div class="card-details-row">
-                    <div class="card-info-label">Kullanılabilir Limit (TL)</div>
+                    <div class="card-info-label" id="card-limit-label-3">Kullanılabilir Limit (TL)</div>
                     <div class="card-balance-tl">5,320,000.00 TL</div>
                 </div>
                 <div class="card-details-row">
@@ -523,65 +523,64 @@
       
       <div class="exclusive-section">
         <div class="exclusive-header">
-            <span>Size Özel</span>
-            <a href="#" style="font-size: 14px; font-weight: 400; color: var(--kuveyt-mid);" onclick="openModal('Özel Kampanyalar', 'Özel Bankacılık müşterilerimize özel tüm promosyon kampanyaları burada listelenmektedir.')">Tümünü Gör</a>
+            <span id="exclusive-title">Size Özel</span>
+            <a href="#" style="font-size: 14px; font-weight: 400; color: var(--kuveyt-mid);" id="exclusive-all-text" onclick="openModal('Özel Kampanyalar', 'Özel Bankacılık müşterilerimize özel tüm promosyon kampanyaları burada listelenmektedir.')">Tümünü Gör</a>
         </div>
         <div class="exclusive-card">
             <div class="card-promo-content">
                 <svg class="icon-svg" viewBox="0 0 24 24" style="fill: #FFC000; width: 40px; height: 40px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                <div class="promo-text" style="margin-top: 8px;">
+                <div class="promo-text" id="promo-desc-text" style="margin-top: 8px;">
                     Miles & Smiles kartınızla bu ay **₺50,000** üzerinde harcama yaparak ekstra **2500 mil** kazanın.
                 </div>
             </div>
             <div class="promo-actions">
-                <button class="btn-skip" onclick="openModal('Kampanya Gizleme', 'Kampanya talebiniz üzerine geçici olarak gizlenmiştir.')">İlgilenmiyorum</button>
-                <button class="btn-join" onclick="openModal('Kampanya Katılımı', 'Tebrikler! Ekstra mil kampanyası kartınıza başarıyla tanımlandı.')">Hemen Katıl</button>
+                <button class="btn-skip" id="promo-btn-skip" onclick="openModal('Kampanya Gizleme', 'Kampanya talebiniz üzerine geçici olarak gizlenmiştir.')">İlgilenmiyorum</button>
+                <button class="btn-join" id="promo-btn-join" onclick="openModal('Kampanya Katılımı', 'Tebrikler! Ekstra mil kampanyası kartınıza başarıyla tanımlandı.')">Hemen Katıl</button>
             </div>
         </div>
       </div>
 
       <div class="fast-transactions-section">
         <div class="fast-transactions-header">
-            <span>Hızlı İşlemler</span>
-            <a href="#" style="font-size: 14px; font-weight: 400; color: var(--kuveyt-mid);" onclick="navigate('Menu')">Tümünü Gör</a>
+            <span id="fast-tx-header">Hızlı İşlemler</span>
+            <a href="#" style="font-size: 14px; font-weight: 400; color: var(--kuveyt-mid);" id="fast-all-text" onclick="navigate('Menu')">Tümünü Gör</a>
         </div>
         <div class="fast-transactions-grid">
-            <div class="fast-transaction-item" onclick="navigate('FX')">
+            <div class="fast-transaction-item" onclick="openModal('Yatırım / FX İşlemleri', 'Döviz alım-satım, kıymetli maden ve hisse senedi piyasalarına anında erişim.')">
                 <div class="item-icon" style="background: #5D4037;"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-3.29-3.29-7.29 7.29L3 19l5.5-5.5 3.29 3.29 4.88-4.88L20 10V6z"/></svg></div>
-                <span>Yatırım / FX</span>
+                <span id="fast-item-1">Yatırım / FX</span>
             </div>
-            <div class="fast-transaction-item" onclick="openModal('Fatura ve Kurum Ödemeleri', 'Otomatik ödemeler veya okul/kurum aidatları için kurum seçin.')">
+            <div class="fast-transaction-item" onclick="openModal('Fatura ve Kurum Ödemeleri', 'Elektrik, su, doğal gaz ve kurumsal ödemelerinizi hızlıca yapın.')">
                 <div class="item-icon" style="background: #1976D2;"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-                <span>Fatura Öde</span>
+                <span id="fast-item-2">Fatura Öde</span>
             </div>
-            <div class="fast-transaction-item" onclick="openModal('Akıllı Birikim', 'Gelecekteki yatırım hedeflerinize uygun altın veya nakit birikim planı başlatın.')">
+            <div class="fast-transaction-item" onclick="openModal('Akıllı Birikim Planı', 'Geleceğe güvenle yatırım yapmak için altın ve döviz birikim hesapları oluşturun.')">
                 <div class="item-icon" style="background: #FFC000;"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 8-3.59 8-8s-3.59-8-8-8zm1 15h-2v-6h-2V9h4v8z"/></svg></div>
-                <span>Birikim Planı</span>
+                <span id="fast-item-3">Birikim Planı</span>
             </div>
             <div class="fast-transaction-item" onclick="navigate('MoneyTransfer')">
                 <div class="item-icon" style="background: var(--kuveyt-mid);"><svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 8V4l-8 8 8 8v-4h8V8z" fill="currentColor"/></svg></div>
-                <span>Para Transferi</span>
+                <span id="fast-item-4">Para Transferi</span>
             </div>
         </div>
       </div>
       
       <div class="transactions-section">
-        <h3>Son İşlemler</h3>
+        <h3 id="last-tx-header">Son İşlemler</h3>
         
-        <!-- بند الدخل المحدث باسم Militsa بدون 5 saatlik -->
         <div class="transaction-item">
             <div class="tx-details-group">
-                <div class="tx-title" style="color: var(--kuveyt-mid);">Militsa Gemisi Gelir Aktarımı</div>
-                <div class="tx-details">İşlem Türü: Gelen Transfer (SWIFT)<br>İşlem Durumu: Başarılı ✔️<br>Tarih: 31.08.2026 – 09:57<br>Hesap: USD Vadesiz Hesap – ****4321<br>Gönderen: Militsa Vapuru / Denizcilik<br>Açıklama: Militsa gemisi sefer gelir aktarımı<br>Masraf: 0 USD</div>
+                <div class="tx-title" style="color: var(--kuveyt-mid);" id="tx-title-1">Militsa Gemisi Gelir Aktarımı</div>
+                <div class="tx-details" id="tx-desc-1">İşlem Türü: Gelen Transfer (SWIFT)<br>İşlem Durumu: Başarılı ✔️<br>Tarih: 31.08.2026 – 09:57<br>Hesap: USD Vadesiz Hesap – ****4321<br>Gönderen: Militsa Vapuru / Denizcilik<br>Açıklama: Militsa gemisi sefer gelir aktarımı<br>Masraf: 0 USD</div>
             </div>
             <span class="tx-amount" style="color: var(--kuveyt-mid);">+30,000.00 USD</span>
         </div>
 
-        <!-- العملية المطلوبة بالصيغة والتنسيق المحدد تماماً -->
+        <!-- بند العملية المحدث بدقة بدون إشارة ناقص وبصيغة - دولار 1400 -->
         <div class="transaction-item">
             <div class="tx-details-group">
-                <div class="tx-title">Kuveyt Türk Mobil – İşlem Detayı</div>
-                <div class="tx-details">
+                <div class="tx-title" id="tx-title-2">Kuveyt Türk Mobil - İşlem Detayı</div>
+                <div class="tx-details" id="tx-desc-2">
                     İşlem Türü: Dış Transfer (SWIFT)<br>
                     İşlem Durumu: Başarılı ✔️<br>
                     Tarih: 31.08.2026 – 09:57<br>
@@ -590,26 +589,25 @@
                     Alıcı Bilgileri: Ad: ************ IBAN: AE***************576<br>
                     Referans No: 26112576<br>
                     Açıklama: Uluslararası para transferi<br>
-                    Masraf: 40 USD (Bankadan bankaya değişir)
+                    Masraf: 40 USD
                 </div>
             </div>
-            <span class="tx-amount" style="color: #cc0000;">-1,400.00 USD</span>
+            <span class="tx-amount" style="color: #cc0000;" id="tx-amount-2">- 1,400.00 USD</span>
         </div>
 
         <div class="transaction-item">
             <div class="tx-details-group">
-                <div class="tx-title">Araç Alımı: BMW M340i</div>
-                <div class="tx-details">Oto Galeri - 15.08.2025 | $64,000.00</div>
+                <div class="tx-title" id="tx-title-3">Araç Alımı: BMW M340i</div>
+                <div class="tx-details" id="tx-desc-3">Oto Galeri - 15.08.2025 | $64,000.00</div>
             </div>
             <span class="tx-amount" style="color: #cc0000;">-₺2,107,520.00</span>
         </div>
 
-        <!-- زر الانتقال لجميع العمليات بالتنسيق المطلوب -->
-        <a href="#" class="view-all-link" style="margin-top: 15px;" onclick="openAllTransactionsModal()">Tüm İşlemleri Görüntüle</a>
+        <a href="#" class="view-all-link" style="margin-top: 15px;" id="view-all-tx-text" onclick="openAllTransactionsModal()">Tüm İşlemleri Görüntüle</a>
       </div>
       
       <div class="private-banking-section">
-          <h3>Özel Bankacılık Temsilcisi ile İletişim</h3>
+          <h3 id="private-rep-title">Özel Bankacılık Temsilcisi ile İletişim</h3>
           <div class="contact-buttons">
               <button class="contact-btn" onclick="openModal('Doğrudan Telefon Araması', 'Özel hesap temsilciniz Sn. Mehmet Özdemir ile bağlantı kuruluyor...')">
                   <svg class="icon-svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.34 1.02-.17 1.12.56 2.33.88 3.57.88.5 0 .9.4 1 .9V20c0 .5-.4.9-1 .9C10.74 20.9 3 13.16 3 3.5c0-.5.4-.9 1-.9h3.5c.4 0 .8.3 1 .8.1.9.3 1.9.8 2.8l-2.2 2.2z" fill="currentColor"/></svg>
@@ -629,51 +627,53 @@
             <button onclick="navigate('Home')" class="header-icon" style="color: #333;">
                 <svg class="icon-svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" fill="currentColor"/></svg>
             </button>
-            <h2>Para Transferi</h2>
+            <h2 id="transfer-header-title">Para Transferi</h2>
             <div></div>
         </div>
 
-        <div class="info-bar">Yurtiçi ve uluslararası hesaplar arası para transferi.</div>
+        <div class="info-bar" id="transfer-info-bar">Yurtiçi ve uluslararası hesaplar arası para transferi.</div>
         
         <div class="transfer-form-group">
             <select class="transfer-input-field" id="transfer-account-select">
-                <option value="" disabled selected>Hesap Seç</option>
+                <option value="" disabled selected id="trans-sel-account">Hesap Seç</option>
                 <option value="card-balance-1trillion">Özel Birikim Kartı (Kullanılabilir Bakiye)</option>
                 <option value="card-limit-4m">Kredi Kartı (4,300,000.00 TL)</option>
             </select>
             <input type="text" class="transfer-input-field" placeholder="IBAN (TR...)">
             <input type="number" class="transfer-input-field" id="transfer-amount-input" placeholder="Tutar (Türk Lirası olarak)">
-            <input type="text" class="transfer-input-field" placeholder="Açıklama">
-            <button class="transfer-button-green" onclick="handleTransfer()">Devam Et</button>
+            <input type="text" class="transfer-input-field" id="trans-desc-placeholder" placeholder="Açıklama">
+            <button class="transfer-button-green" id="trans-btn-continue" onclick="handleTransfer()">Devam Et</button>
         </div>
     </div>
 
+    <!-- قسم الاستثمار المحدث والفعال -->
     <div id="fx-view" class="panel-view" style="padding: 20px; text-align: center;">
-        <h3 style="color: var(--kuveyt-deep); margin-top: 40px;">Döviz ve Yatırım Piyasaları (FX & Investment)</h3>
-        <p style="color: #666;">Altın fiyatları, döviz kurları, yerel ve uluslararası borsa piyasaları canlı verileri.</p>
-        <button class="login-tabs-btn-green" style="margin-top: 20px;" onclick="openModal('Altın ve Döviz İşlemleri', 'Canlı işlem platformu başarıyla açıldı.')">Anlık İşlem Başlat</button>
+        <h3 id="fx-header-title" style="color: var(--kuveyt-deep); margin-top: 40px;">Döviz ve Yatırım Piyasaları (FX & Investment)</h3>
+        <p id="fx-desc-title" style="color: #666;">Altın fiyatları, döviz kurları, yerel ve uluslararası borsa piyasaları canlı verileri.</p>
+        
+        <div style="background: var(--kuveyt-gray); padding: 15px; border-radius: 10px; margin-top: 20px; text-align: left; border: 1px solid #eee;">
+            <div style="font-weight: 700; color: var(--kuveyt-deep);">Ons Altın (Gold): $2,640.50 (+%0.85)</div>
+            <div style="font-weight: 700; color: var(--kuveyt-deep); margin-top: 8px;">USD/TRY Alış: 41.83 | Satış: 41.95</div>
+            <div style="font-weight: 700; color: var(--kuveyt-deep); margin-top: 8px;">EUR/TRY Alış: 45.10 | Satış: 45.30</div>
+        </div>
+
+        <button class="login-tabs-btn-green" id="fx-action-btn" style="margin-top: 25px;" onclick="openModal('Canlı İşlem Platformu', 'Portföyünüzden anlık emir iletmek için işlem limitiniz onaylanmıştır.')">Anlık İşlem Başlat</button>
     </div>
 
-    <!-- قائمة الوضع المالي المحدثة لتعرض البيانات والتحليلات المطلوبة -->
+    <!-- قسم الوضع المالي المحدث وبدون ديون -->
     <div id="status-view" class="panel-view" style="padding: 20px; background: #fff; padding-bottom: 80px;">
-        <h3 style="color: var(--kuveyt-deep); margin-top: 20px; text-align: center;">Finansal Durum Özetim (Financial Status)</h3>
-        <p style="color: #666; text-align: center; font-size: 13px; margin-bottom: 20px;">Varlıklarınız, borçlarınız ve yatırım portföyü analiz grafikleriniz.</p>
+        <h3 id="status-header-title" style="color: var(--kuveyt-deep); margin-top: 20px; text-align: center;">Finansal Durum Özetim (Financial Status)</h3>
+        <p id="status-desc-title" style="color: #666; text-align: center; font-size: 13px; margin-bottom: 20px;">Varlıklarınız ve yatırım portföyü analiz grafikleriniz.</p>
         
         <div style="background: var(--kuveyt-gray); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #eee;">
-            <div style="font-weight: 700; color: var(--kuveyt-deep); margin-bottom: 8px;">Toplam Varlıklar (Total Assets)</div>
-            <div style="font-size: 20px; font-weight: 900; color: #333;" id="status-total-assets">₺18,867,330.00</div>
-            <div style="font-size: 12px; color: #777; margin-top: 4px;">USD Karşılığı: <span style="color: #4CAF50; font-weight: 700;">$451,000.00</span></div>
-        </div>
-
-        <div style="background: var(--kuveyt-gray); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #eee;">
-            <div style="font-weight: 700; color: #cc0000; margin-bottom: 8px;">Toplam Borçlar ve Kredi Kartları (Liabilities)</div>
-            <div style="font-size: 18px; font-weight: 900; color: #333;">₺9,620,000.00</div>
-            <div style="font-size: 12px; color: #777; margin-top: 4px;">Kredi Limitleri ve Taksitli Borçlar Toplamı</div>
+            <div id="status-total-assets-title" style="font-weight: 700; color: var(--kuveyt-deep); margin-bottom: 8px;">Toplam Varlıklar (Total Assets)</div>
+            <div style="font-size: 20px; font-weight: 900; color: #333;" id="status-total-assets">₺18,865,330.00</div>
+            <div style="font-size: 12px; color: #777; margin-top: 4px;">USD Karşılığı: <span style="color: #4CAF50; font-weight: 700;">$450,952.19</span></div>
         </div>
 
         <div style="background: var(--kuveyt-light); padding: 15px; border-radius: 10px; border: 1px solid var(--kuveyt-mid);">
-            <div style="font-weight: 700; color: var(--kuveyt-deep); margin-bottom: 5px;">Yatırım Portföyü Dağılımı</div>
-            <p style="font-size: 13px; color: #444; line-height: 1.5; margin: 0;">
+            <div id="status-portfolio-title" style="font-weight: 700; color: var(--kuveyt-deep); margin-bottom: 5px;">Yatırım Portföyü Dağılımı</div>
+            <p id="status-portfolio-desc" style="font-size: 13px; color: #444; line-height: 1.5; margin: 0;">
                 • USD Vadesiz Likidite: %45<br>
                 • Gayrimenkul Yatırımları: %35<br>
                 • Araç ve Filo (Militsa Bağlantılı): %20
@@ -681,10 +681,22 @@
         </div>
     </div>
 
+    <!-- قائمة القائمة المحدثة والفعالة -->
     <div id="menu-view" class="panel-view" style="padding: 20px; text-align: center;">
-        <h3 style="color: var(--kuveyt-deep); margin-top: 40px;">Kapsamlı Bankacılık Menüsü</h3>
-        <p style="color: #666;">Tüm banka hizmetleri, kartlar, finansman ve kişisel ayarlarınız burada.</p>
-        <button class="login-tabs-btn-green" style="margin-top: 20px;" onclick="openModal('Güvenlik Ayarları', 'Parmak izi, çift aşamalı doğrulama ve şifre değiştirme yönetimi.')">Güvenlik ve Koruma Ayarları</button>
+        <h3 id="menu-header-title" style="color: var(--kuveyt-deep); margin-top: 30px;">Kapsamlı Bankacılık Menüsü</h3>
+        <p id="menu-desc-title" style="color: #666; font-size: 14px; margin-bottom: 20px;">Tüm banka hizmetleri, kartlar ve kişisel ayarlarınız.</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px; text-align: left;">
+            <div style="background: #f9f9f9; padding: 12px; border-radius: 8px; cursor: pointer; border: 1px solid #eee;" onclick="openModal('Hesap Hareketleri', 'Son 1 yıla ait tüm dekont ve hareket dökümleriniz hazırdır.')">
+                📁 <span id="menu-opt-1">Hesap Hareketleri ve Dekontlar</span>
+            </div>
+            <div style="background: #f9f9f9; padding: 12px; border-radius: 8px; cursor: pointer; border: 1px solid #eee;" onclick="openModal('Yatırım Portföyü', 'Portföyünüzün günlük getiri oranı %2.4 olarak hesaplanmıştır.')">
+                📈 <span id="menu-opt-2">Yatırım Portföyü ve Fon Yönetimi</span>
+            </div>
+            <div style="background: #f9f9f9; padding: 12px; border-radius: 8px; cursor: pointer; border: 1px solid #eee;" onclick="openModal('Güvenlik ve Ayarlar', 'Biyometrik giriş, bildirim tercihleri ve limit güncellemeleri.')">
+                ⚙️ <span id="menu-opt-3">Güvenlik ve Profil Ayarları</span>
+            </div>
+        </div>
     </div>
 
   </main>
@@ -729,7 +741,7 @@ const kurumsalContent = document.getElementById('kurumsal-content');
 const manualLoginBtnTabs = document.getElementById('manual-login-btn-tabs');
 const btnShowLoginTabs = document.getElementById('btn-show-login-tabs');
 
-let baseBalanceUSD = 451000.00; 
+let baseBalanceUSD = 450952.19; 
 const EXCHANGE_RATES = {
     'TRY': 41.83,
     'USD': 1.0,
@@ -753,7 +765,7 @@ function formatCurrency(amount) {
     return amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
-// دالة تغيير اللغات الثلاث (تركية، إنجليزية، عربية)
+// دالة تغيير اللغات المتكاملة لجميع الشاشات والنصوص
 function toggleLanguage() {
     currentLangIndex = (currentLangIndex + 1) % languages.length;
     const lang = languages[currentLangIndex];
@@ -768,6 +780,57 @@ function toggleLanguage() {
         document.getElementById('act-calc').textContent = "Hesapla";
         document.getElementById('act-fast').textContent = "FAST İşlemleri";
         document.getElementById('act-atm').textContent = "ATM / E-Dekont";
+        
+        // داخل التطبيق (تركية)
+        document.getElementById('vip-title-text').textContent = "Özel Bankacılık";
+        document.getElementById('info-bar-text').textContent = "Dolar / TL döviz kuru güncellendi:";
+        document.getElementById('tab-lbl-accounts').textContent = "Hesaplarım";
+        document.getElementById('tab-lbl-cards').textContent = "Kartlarım";
+        document.getElementById('view-all-accounts-text').textContent = "Tüm Hesaplarımı Görüntüle";
+        document.getElementById('cards-header-title').textContent = "Mevcut Kartlarım";
+        document.getElementById('card-limit-label-1').textContent = "Kullanılabilir Limit (TL)";
+        document.getElementById('card-limit-label-2').textContent = "Kullanılabilir Bakiye (TL)";
+        document.getElementById('card-limit-label-3').textContent = "Kullanılabilir Limit (TL)";
+        document.getElementById('exclusive-title').textContent = "Size Özel";
+        document.getElementById('exclusive-all-text').textContent = "Tümünü Gör";
+        document.getElementById('promo-desc-text').innerHTML = 'Miles & Smiles kartınızla bu ay **₺50,000** üzerinde harcama yaparak ekstra **2500 mil** kazanın.';
+        document.getElementById('promo-btn-skip').textContent = "İlgilenmiyorum";
+        document.getElementById('promo-btn-join').textContent = "Hemen Katıl";
+        document.getElementById('fast-tx-header').textContent = "Hızlı İşlemler";
+        document.getElementById('fast-all-text').textContent = "Tümünü Gör";
+        document.getElementById('fast-item-1').textContent = "Yatırım / FX";
+        document.getElementById('fast-item-2').textContent = "Fatura Öde";
+        document.getElementById('fast-item-3').textContent = "Birikim Planı";
+        document.getElementById('fast-item-4').textContent = "Para Transferi";
+        document.getElementById('last-tx-header').textContent = "Son İşlemler";
+        document.getElementById('tx-title-1').textContent = "Militsa Gemisi Gelir Aktarımı";
+        document.getElementById('tx-title-2').textContent = "Kuveyt Türk Mobil - İşlem Detayı";
+        document.getElementById('tx-title-3').textContent = "Araç Alımı: BMW M340i";
+        document.getElementById('view-all-tx-text').textContent = "Tüm İşlemleri Görüntüle";
+        document.getElementById('private-rep-title').textContent = "Özel Bankacılık Temsilcisi ile İletişim";
+        document.getElementById('transfer-header-title').textContent = "Para Transferi";
+        document.getElementById('transfer-info-bar').textContent = "Yurtiçi ve uluslararası hesaplar arası para transferi.";
+        document.getElementById('trans-sel-account').textContent = "Hesap Seç";
+        document.getElementById('trans-desc-placeholder').placeholder = "Açıklama";
+        document.getElementById('trans-btn-continue').textContent = "Devam Et";
+        document.getElementById('fx-header-title').textContent = "Döviz ve Yatırım Piyasaları (FX & Investment)";
+        document.getElementById('fx-desc-title').textContent = "Altın fiyatları, döviz kurları, yerel ve uluslararası borsa piyasaları canlı verileri.";
+        document.getElementById('fx-action-btn').textContent = "Anlık İşlem Başlat";
+        document.getElementById('status-header-title').textContent = "Finansal Durum Özetim (Financial Status)";
+        document.getElementById('status-desc-title').textContent = "Varlıklarınız ve yatırım portföyü analiz grafikleriniz.";
+        document.getElementById('status-total-assets-title').textContent = "Toplam Varlıklar (Total Assets)";
+        document.getElementById('status-portfolio-title').textContent = "Yatırım Portföyü Dağılımı";
+        document.getElementById('menu-header-title').textContent = "Kapsamlı Bankacılık Menüsü";
+        document.getElementById('menu-desc-title').textContent = "Tüm banka hizmetleri, kartlar ve kişisel ayarlarınız.";
+        document.getElementById('menu-opt-1').textContent = "Hesap Hareketleri ve Dekontlar";
+        document.getElementById('menu-opt-2').textContent = "Yatırım Portföyü ve Fon Yönetimi";
+        document.getElementById('menu-opt-3').textContent = "Güvenlik ve Profil Ayarları";
+        document.getElementById('nav-lbl-home').textContent = "Ana Sayfa";
+        document.getElementById('nav-lbl-fx').textContent = "Yatırım/FX";
+        document.getElementById('nav-lbl-status').textContent = "Finansal Durum";
+        document.getElementById('nav-lbl-transfer').textContent = "Transfer";
+        document.getElementById('nav-lbl-menu').textContent = "Menü";
+
     } else if (lang === 'EN') {
         document.getElementById('welcome-main-title').innerHTML = "Welcome to<br>Kuveyt Türk Mobile";
         document.getElementById('download-app-text').innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> Download App';
@@ -776,14 +839,115 @@ function toggleLanguage() {
         document.getElementById('act-calc').textContent = "Calculate";
         document.getElementById('act-fast').textContent = "FAST Tx";
         document.getElementById('act-atm').textContent = "ATM / E-Receipt";
+        
+        // داخل التطبيق (إنجليزية)
+        document.getElementById('vip-title-text').textContent = "Private Banking";
+        document.getElementById('info-bar-text').textContent = "USD / TRY exchange rate updated:";
+        document.getElementById('tab-lbl-accounts').textContent = "My Accounts";
+        document.getElementById('tab-lbl-cards').textContent = "My Cards";
+        document.getElementById('view-all-accounts-text').textContent = "View All My Accounts";
+        document.getElementById('cards-header-title').textContent = "My Active Cards";
+        document.getElementById('card-limit-label-1').textContent = "Available Limit (TL)";
+        document.getElementById('card-limit-label-2').textContent = "Available Balance (TL)";
+        document.getElementById('card-limit-label-3').textContent = "Available Limit (TL)";
+        document.getElementById('exclusive-title').textContent = "Special For You";
+        document.getElementById('exclusive-all-text').textContent = "View All";
+        document.getElementById('promo-desc-text').innerHTML = 'Earn extra **2500 miles** by spending over **₺50,000** this month with your Miles & Smiles card.';
+        document.getElementById('promo-btn-skip').textContent = "Not Interested";
+        document.getElementById('promo-btn-join').textContent = "Join Now";
+        document.getElementById('fast-tx-header').textContent = "Quick Transactions";
+        document.getElementById('fast-all-text').textContent = "View All";
+        document.getElementById('fast-item-1').textContent = "Investment / FX";
+        document.getElementById('fast-item-2').textContent = "Pay Bills";
+        document.getElementById('fast-item-3').textContent = "Savings Plan";
+        document.getElementById('fast-item-4').textContent = "Money Transfer";
+        document.getElementById('last-tx-header').textContent = "Recent Transactions";
+        document.getElementById('tx-title-1').textContent = "Militsa Ship Revenue Transfer";
+        document.getElementById('tx-title-2').textContent = "Kuveyt Türk Mobile - Transaction Detail";
+        document.getElementById('tx-title-3').textContent = "Car Purchase: BMW M340i";
+        document.getElementById('view-all-tx-text').textContent = "View All Transactions";
+        document.getElementById('private-rep-title').textContent = "Contact Private Banking Representative";
+        document.getElementById('transfer-header-title').textContent = "Money Transfer";
+        document.getElementById('transfer-info-bar').textContent = "Domestic and international fund transfers.";
+        document.getElementById('trans-sel-account').textContent = "Select Account";
+        document.getElementById('trans-desc-placeholder').placeholder = "Description";
+        document.getElementById('trans-btn-continue').textContent = "Continue";
+        document.getElementById('fx-header-title').textContent = "Foreign Exchange & Investments";
+        document.getElementById('fx-desc-title').textContent = "Live gold prices, exchange rates and stock markets.";
+        document.getElementById('fx-action-btn').textContent = "Start Instant Transaction";
+        document.getElementById('status-header-title').textContent = "Financial Status Summary";
+        document.getElementById('status-desc-title').textContent = "Your assets and investment portfolio analysis.";
+        document.getElementById('status-total-assets-title').textContent = "Total Assets";
+        document.getElementById('status-portfolio-title').textContent = "Investment Portfolio Allocation";
+        document.getElementById('menu-header-title').textContent = "Comprehensive Banking Menu";
+        document.getElementById('menu-desc-title').textContent = "All bank services, cards and personal settings.";
+        document.getElementById('menu-opt-1').textContent = "Account History & Receipts";
+        document.getElementById('menu-opt-2').textContent = "Investment Portfolio & Funds";
+        document.getElementById('menu-opt-3').textContent = "Security & Profile Settings";
+        document.getElementById('nav-lbl-home').textContent = "Home";
+        document.getElementById('nav-lbl-fx').textContent = "Investment/FX";
+        document.getElementById('nav-lbl-status').textContent = "Financial Status";
+        document.getElementById('nav-lbl-transfer').textContent = "Transfer";
+        document.getElementById('nav-lbl-menu').textContent = "Menu";
+
     } else if (lang === 'AR') {
-        document.getElementById('welcome-main-title').innerHTML = "مرحباً بكم في<ب>الكويت ترك موبايل</ب>";
+        document.getElementById('welcome-main-title').innerHTML = "مرحباً بكم في<br>الكويت ترك موبايل";
         document.getElementById('download-app-text').innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> تحميل التطبيق';
         document.getElementById('btn-customer-text').textContent = "أرغب أن أكون عميلاً";
         document.getElementById('btn-show-login-tabs').textContent = "تسجيل الدخول";
         document.getElementById('act-calc').textContent = "الحاسبة";
         document.getElementById('act-fast').textContent = "تحويلات FAST";
         document.getElementById('act-atm').textContent = "الصراف الآلي";
+        
+        // داخل التطبيق (عربية)
+        document.getElementById('vip-title-text').textContent = "الخدمات المصرفية الخاصة";
+        document.getElementById('info-bar-text').textContent = "تم تحديث سعر صرف الدولار مقابل الليرة:";
+        document.getElementById('tab-lbl-accounts').textContent = "حساباتي";
+        document.getElementById('tab-lbl-cards').textContent = "بطاقاتي";
+        document.getElementById('view-all-accounts-text').textContent = "عرض كافة حساباتي";
+        document.getElementById('cards-header-title').textContent = "بطاقاتي النشطة";
+        document.getElementById('card-limit-label-1').textContent = "الحد المتاح (ليرة تركية)";
+        document.getElementById('card-limit-label-2').textContent = "الرصيد المتاح (ليرة تركية)";
+        document.getElementById('card-limit-label-3').textContent = "الحد المتاح (ليرة تركية)";
+        document.getElementById('exclusive-title').textContent = "خصيصاً لك";
+        document.getElementById('exclusive-all-text').textContent = "عرض الكل";
+        document.getElementById('promo-desc-text').innerHTML = 'اربح **2500 ميل** إضافي عند إنفاق أكثر من **₺50,000** هذا الشهر ببطاقة Miles & Smiles.';
+        document.getElementById('promo-btn-skip').textContent = "لا أهتم";
+        document.getElementById('promo-btn-join').textContent = "انضم الآن";
+        document.getElementById('fast-tx-header').textContent = "العمليات السريعة";
+        document.getElementById('fast-all-text').textContent = "عرض الكل";
+        document.getElementById('fast-item-1').textContent = "الاستثمار / FX";
+        document.getElementById('fast-item-2').textContent = "دفع الفواتير";
+        document.getElementById('fast-item-3').textContent = "خطة الادخار";
+        document.getElementById('fast-item-4').textContent = "تحويل الأموال";
+        document.getElementById('last-tx-header').textContent = "آخر العمليات";
+        document.getElementById('tx-title-1').textContent = "تحويل أرباح باخرة ميليسا";
+        document.getElementById('tx-title-2').textContent = "الكويت ترك موبايل - تفاصيل العملية";
+        document.getElementById('tx-title-3').textContent = "شراء سيارة: BMW M340i";
+        document.getElementById('view-all-tx-text').textContent = "عرض جميع العمليات";
+        document.getElementById('private-rep-title').textContent = "التواصل مع ممثل الخدمات المصرفية الخاصة";
+        document.getElementById('transfer-header-title').textContent = "تحويل الأموال";
+        document.getElementById('transfer-info-bar').textContent = "تحويل الأموال بين الحسابات المحلية والدولية.";
+        document.getElementById('trans-sel-account').textContent = "اختر الحساب";
+        document.getElementById('trans-desc-placeholder').placeholder = "الوصف";
+        document.getElementById('trans-btn-continue').textContent = "متابعة";
+        document.getElementById('fx-header-title').textContent = "أسواق العملات والأجنبية والاستثمار";
+        document.getElementById('fx-desc-title').textContent = "أسعار الذهب المباشرة، أسعار الصرف وأسواق الأسهم.";
+        document.getElementById('fx-action-btn').textContent = "بدء عملية فورية";
+        document.getElementById('status-header-title').textContent = "ملخص وضعي المالي";
+        document.getElementById('status-desc-title').textContent = "أصولك ورسوم تحليل محفظتك الاستثمارية.";
+        document.getElementById('status-total-assets-title').textContent = "إجمالي الأصول";
+        document.getElementById('status-portfolio-title').textContent = "توزيع محفظة الاستثمار";
+        document.getElementById('menu-header-title').textContent = "قائمة الخدمات المصرفية الشاملة";
+        document.getElementById('menu-desc-title').textContent = "كافة الخدمات المصرفية، البطاقات وإعداداتك الشخصية.";
+        document.getElementById('menu-opt-1').textContent = "حركات الحساب والإيصالات";
+        document.getElementById('menu-opt-2').textContent = "محفظة الاستثمار وإدارة الصناديق";
+        document.getElementById('menu-opt-3').textContent = "الأمان وإعدادات الملف الشخصي";
+        document.getElementById('nav-lbl-home').textContent = "الرئيسية";
+        document.getElementById('nav-lbl-fx').textContent = "الاستثمار/FX";
+        document.getElementById('nav-lbl-status').textContent = "الوضع المالي";
+        document.getElementById('nav-lbl-transfer').textContent = "التحويل";
+        document.getElementById('nav-lbl-menu').textContent = "القائمة";
     }
 }
 
@@ -847,7 +1011,7 @@ function openModal(title, description) {
 }
 
 function openAllTransactionsModal() {
-    openModal("Tüm İşlem Geçmişi", "1. Militsa Gemisi Gelir Aktarımı: +$30,000.00\n2. Dış Transfer (SWIFT) Emirates NBD: -$1,400.00\n3. Araç Alımı (BMW M340i): -₺2,107,520.00\n4. Gayrimenkul Yatırımı (İstanbul Villaları): -₺5,019,600.00");
+    openModal("Tüm İşlem Geçmişi", "1. Militsa Gemisi Gelir Aktarımı: +$30,000.00\n2. Dış Transfer (SWIFT) Emirates NBD: - 1,400.00 USD\n3. Araç Alımı (BMW M340i): -₺2,107,520.00\n4. Gayrimenkul Yatırımı (İstanbul Villaları): -₺5,019,600.00");
 }
 
 function closeModal() {
